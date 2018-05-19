@@ -1,6 +1,6 @@
-##Simple implementation of RESTful API for transfers between accounts
+## Simple implementation of RESTful API for transfers between accounts
 
-###Uses
+### Uses
 * java 8
 * maven
 * jersey
@@ -17,12 +17,12 @@
 ### To test
 Service is starting on port 8080.\
 For test REST services you could use:\
-* curl (https://curl.haxx.se/), 
-* Postman (https://www.getpostman.com/), 
+* curl (https://curl.haxx.se/),
+* Postman (https://www.getpostman.com/),
 * SoapUI (https://www.soapui.org/downloads/soapui.html)
 * or any other REST tools
 
-####Available operations
+#### Available operations
 ##### Accounts
 * `GET http://localhost:8080/accounts/` to get list of accounts
 * `GET http://localhost:8080/accounts/{id}` to get account by {id}
