@@ -68,4 +68,154 @@ For test REST services you could use:
 ```
 * `DELETE http://localhost:8080/transfers/{id}` to delete transfer by {id}
 
+#### Example TEST scenario
+
+1. Create first account<br/>
+Method `POST`<br/>
+URL `http://localhost:8080/accounts/`<br/>
+Content-Type `application/json`<br/>
+Body
+`    {
+      "client": "Test",
+      "balance": "10000",
+      "currency": "RUR"
+    }`<br/>
+Response
+`{
+    "id": "0",
+    "client": "Test",
+    "balance": 10000,
+    "currency": "RUR"
+}`<br/>
+2. Create second account<br/>
+Method `POST`<br/>
+URL `http://localhost:8080/accounts/`<br/>
+Content-Type `application/json`<br/>
+Body
+`    {
+      "client": "Test2",
+      "balance": "0",
+      "currency": "RUR"
+    }`<br/>
+Response
+`{
+     "id": "1",
+     "client": "Test2",
+     "balance": 0,
+     "currency": "RUR"
+ }`<br/>
+3. Get accounts list<br/>
+Method `GET`<br/>
+URL `http://localhost:8080/accounts/`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`[
+     {
+         "id": "0",
+         "client": "Test",
+         "balance": 10000,
+         "currency": "RUR"
+     },
+     {
+         "id": "1",
+         "client": "Test2",
+         "balance": 0,
+         "currency": "RUR"
+     }
+ ]`<br/>
+4. Create transfer<br/>
+Method `POST`<br/>
+URL `http://localhost:8080/transfers/`<br/>
+Content-Type `application/json`<br/>
+Body
+`{
+   "srcAccountId": "0",
+   "destAccountId": "1",
+   "amount": "1000",
+   "currency": "RUR"
+ }
+`<br/>
+Response
+`{
+     "id": "2",
+     "srcAccountId": "0",
+     "destAccountId": "1",
+     "amount": 1000,
+     "currency": "RUR"
+ }`<br/>
+5. Get transfer by id<br/>
+Method `GET`<br/>
+URL `http://localhost:8080/transfers/2`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`{
+     "id": "2",
+     "srcAccountId": "0",
+     "destAccountId": "1",
+     "amount": 1000,
+     "currency": "RUR"
+ }`<br/>
+6. Get accounts list<br/>
+Method `GET`<br/>
+URL `http://localhost:8080/accounts/`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`[
+     {
+         "id": "0",
+         "client": "Test",
+         "balance": 9000,
+         "currency": "RUR"
+     },
+     {
+         "id": "1",
+         "client": "Test2",
+         "balance": 1000,
+         "currency": "RUR"
+     }
+ ]`<br/>
+7. Delete transfer<br/>
+Method `DELETE`<br/>
+URL `http://localhost:8080/transfers/2`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`empty`<br/>
+8. Get accounts list<br/>
+Method `GET`<br/>
+URL `http://localhost:8080/accounts/`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`[
+     {
+         "id": "0",
+         "client": "Test",
+         "balance": 10000,
+         "currency": "RUR"
+     },
+     {
+         "id": "1",
+         "client": "Test2",
+         "balance": 0,
+         "currency": "RUR"
+     }
+ ]`<br/>
+9. Get transfer by id<br/>
+Method `GET`<br/>
+URL `http://localhost:8080/transfers/2`<br/>
+Content-Type `empty`<br/>
+Body
+`empty`<br/>
+Response
+`empty`<br/>
+
 
