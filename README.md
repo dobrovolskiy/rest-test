@@ -16,7 +16,7 @@
 
 ### To test
 Service is starting on port 8080.\
-For test REST services you could use:\
+For test REST services you could use:
 * curl (https://curl.haxx.se/),
 * Postman (https://www.getpostman.com/),
 * SoapUI (https://www.soapui.org/downloads/soapui.html)
