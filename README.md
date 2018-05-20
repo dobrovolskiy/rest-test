@@ -12,7 +12,7 @@
 `mvn clean install`
 
 ### To run
-`java -jar .\target\rest-test-1.0-SNAPSHOT.jar`
+`java -jar .\target\rest-test-1.0.jar`
 
 ### To test
 Service is starting on port 8080.\
