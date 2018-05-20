@@ -47,6 +47,17 @@ public class TransferValidatorTest {
         validator.validate(transfer);
     }
 
+    @Test(expected = BusinessException.class)
+    public void validateSameAccounts() throws Exception {
+        Transfer transfer = new Transfer();
+        String srcAccountId = "id1";
+        transfer.setSrcAccountId(srcAccountId);
+        transfer.setDestAccountId(srcAccountId);
+        accountService.create(createAccount(srcAccountId));
+        transfer.setAmount(BigDecimal.ONE);
+        validator.validate(transfer);
+    }
+
     @Test
     public void validateZero() throws Exception {
         Transfer transfer = new Transfer();
