@@ -1,8 +1,8 @@
 package com.github.dobrovolskiy.dao;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.model.Transfer;
-
-import java.util.List;
 
 /**
  * CRUD dao for transfer operations
@@ -11,7 +11,7 @@ import java.util.List;
  * @since 1.0
  */
 public interface TransferDao {
-    List<Transfer> getAll();
+    PageResponse<Transfer> getAll(PageRequest pageRequest);
 
     Transfer get(String id);
 

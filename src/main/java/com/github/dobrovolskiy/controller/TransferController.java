@@ -6,7 +6,6 @@ import com.github.dobrovolskiy.service.TransferServiceImpl;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 /**
  * RESTful controller for money transfers
@@ -21,8 +20,9 @@ public class TransferController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Transfer> getAll() {
-        return transferService.getAll();
+    public PageResponse<Transfer> getAll(@QueryParam("page") @DefaultValue("0") Integer page,
+                                 @QueryParam("size") @DefaultValue("10") Integer size) {
+        return transferService.getAll(new PageRequest(page, size));
     }
 
     @GET

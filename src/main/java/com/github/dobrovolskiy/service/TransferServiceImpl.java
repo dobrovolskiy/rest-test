@@ -1,5 +1,7 @@
 package com.github.dobrovolskiy.service;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.dao.InMemTransferDao;
 import com.github.dobrovolskiy.dao.TransferDao;
 import com.github.dobrovolskiy.exception.BusinessException;
@@ -8,7 +10,7 @@ import com.github.dobrovolskiy.model.Transfer;
 import com.github.dobrovolskiy.validator.TransferValidator;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * {@link TransferService} implementation with in-memory storage
@@ -25,13 +27,15 @@ import java.util.List;
  */
 public class TransferServiceImpl implements TransferService {
 
+    private static final ReentrantLock LOCK = new ReentrantLock();
+
     private final TransferDao transferDao = new InMemTransferDao();
     private final AccountService accountService = new AccountServiceImpl();
     private final TransferValidator validator = new TransferValidator(accountService);
 
     @Override
-    public List<Transfer> getAll() {
-        return transferDao.getAll();
+    public PageResponse<Transfer> getAll(PageRequest pageRequest) {
+        return transferDao.getAll(pageRequest);
     }
 
     @Override
@@ -75,26 +79,42 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void provideTransfer(Transfer transfer) {
-        if (transfer != null) {
-            Account srcAccount = accountService.getById(transfer.getSrcAccountId());
-            Account desAccount = accountService.getById(transfer.getDestAccountId());
-            BigDecimal transferAmount = transfer.getAmount();
-            updateBalance(srcAccount, transferAmount.negate());
-            accountService.update(srcAccount);
-            updateBalance(desAccount, transferAmount);
-            accountService.update(desAccount);
+        try {
+            if (LOCK.tryLock()) {
+                if (transfer != null) {
+                    Account srcAccount = accountService.getById(transfer.getSrcAccountId());
+                    Account desAccount = accountService.getById(transfer.getDestAccountId());
+                    BigDecimal transferAmount = transfer.getAmount();
+                    updateBalance(srcAccount, transferAmount.negate());
+                    accountService.update(srcAccount);
+                    updateBalance(desAccount, transferAmount);
+                    accountService.update(desAccount);
+                }
+            } else {
+                throw new BusinessException("Data not actual");
+            }
+        } finally {
+            LOCK.unlock();
         }
     }
 
     private void cancelTransfer(Transfer transfer) {
-        if (transfer != null) {
-            Account srcAccount = accountService.getById(transfer.getSrcAccountId());
-            Account desAccount = accountService.getById(transfer.getDestAccountId());
-            BigDecimal transferAmount = transfer.getAmount();
-            updateBalance(desAccount, transferAmount.negate());
-            accountService.update(desAccount);
-            updateBalance(srcAccount, transferAmount);
-            accountService.update(srcAccount);
+        try {
+            if (LOCK.tryLock()) {
+                if (transfer != null) {
+                    Account srcAccount = accountService.getById(transfer.getSrcAccountId());
+                    Account desAccount = accountService.getById(transfer.getDestAccountId());
+                    BigDecimal transferAmount = transfer.getAmount();
+                    updateBalance(desAccount, transferAmount.negate());
+                    accountService.update(desAccount);
+                    updateBalance(srcAccount, transferAmount);
+                    accountService.update(srcAccount);
+                }
+            } else {
+                throw new BusinessException("Data not actual");
+            }
+        } finally {
+            LOCK.unlock();
         }
     }
 

@@ -1,11 +1,11 @@
 package com.github.dobrovolskiy.dao;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.model.Transfer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  * Created on 19.05.2018.
@@ -23,9 +23,9 @@ public class InMemTransferDaoTest {
     public void getAll() {
         Transfer expected = new Transfer();
         transferDao.save(expected);
-        List<Transfer> transfers = transferDao.getAll();
-        Assert.assertEquals(1, transfers.size());
-        Assert.assertEquals(expected, transfers.get(0));
+        PageResponse<Transfer> transfers = transferDao.getAll(new PageRequest(0, 10));
+        Assert.assertEquals(1, transfers.data.size());
+        Assert.assertEquals(expected, transfers.data.get(0));
     }
 
     @Test

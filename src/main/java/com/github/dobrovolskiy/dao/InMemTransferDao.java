@@ -1,5 +1,7 @@
 package com.github.dobrovolskiy.dao;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.model.Transfer;
 import com.github.dobrovolskiy.model.generator.GuidIdGenerator;
 import com.github.dobrovolskiy.model.generator.IdGenerator;
@@ -27,8 +29,15 @@ public class InMemTransferDao implements TransferDao {
 
     @Override
 
-    public List<Transfer> getAll() {
-        return storage.values().stream().map(Transfer::new).collect(Collectors.toList());
+    public PageResponse<Transfer> getAll(PageRequest pageRequest) {
+        int offset = pageRequest.page * pageRequest.size;
+        int limit = pageRequest.size;
+        List<Transfer> data = storage.values().stream()
+                .skip(offset)
+                .limit(limit)
+                .map(Transfer::new)
+                .collect(Collectors.toList());
+        return new PageResponse<>(pageRequest.page, pageRequest.size, storage.size(), data);
     }
 
     @Override

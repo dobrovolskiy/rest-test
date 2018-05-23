@@ -1,8 +1,8 @@
 package com.github.dobrovolskiy.service;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.model.Transfer;
-
-import java.util.List;
 
 /**
  * Service to perform transfer operations
@@ -11,7 +11,7 @@ import java.util.List;
  * @since 1.0
  */
 public interface TransferService {
-    List<Transfer> getAll();
+    PageResponse<Transfer> getAll(PageRequest pageRequest);
 
     Transfer getById(String id);
 

@@ -1,5 +1,7 @@
 package com.github.dobrovolskiy.service;
 
+import com.github.dobrovolskiy.controller.PageRequest;
+import com.github.dobrovolskiy.controller.PageResponse;
 import com.github.dobrovolskiy.model.Account;
 import com.github.dobrovolskiy.model.Transfer;
 import org.junit.Assert;
@@ -7,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created on 19.05.2018.
@@ -23,8 +24,8 @@ public class TransferServiceImplTest {
 
     @Test
     public void getAll() {
-        List<Transfer> transfers = service.getAll();
-        Assert.assertEquals(0, transfers.size());
+        PageResponse<Transfer> transfers = service.getAll(new PageRequest(0, 10));
+        Assert.assertEquals(0, transfers.data.size());
     }
 
     @Test

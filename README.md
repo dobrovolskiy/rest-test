@@ -45,7 +45,7 @@ For test REST services you could use:
 * `DELETE http://localhost:8080/accounts/{id}` to delete account by {id}
 
 ##### Transfers
-* `GET http://localhost:8080/transfers/` to get list of transfers
+* `GET http://localhost:8080/transfers/?page=0&amp;size=10` to get list of transfers with pagination params
 * `GET http://localhost:8080/transfers/{id}` to get transfer by {id}
 * `POST http://localhost:8080/transfers/` to create transfer between accounts with body for example:
 ```json
@@ -131,11 +131,18 @@ URL `http://localhost:8080/transfers/`<br/>
 Content-Type `application/json`<br/>
 Body
 `{
-   "srcAccountId": "0",
-   "destAccountId": "1",
-   "amount": "1000",
-   "currency": "RUR"
- }
+     "page": 0,
+     "size":10,
+     "total": 1,
+     "data": [
+         {
+           "srcAccountId": "0",
+           "destAccountId": "1",
+           "amount": "1000",
+           "currency": "RUR"
+        }
+    ]
+}
 `<br/>
 Response
 `{
